@@ -16,6 +16,7 @@ const cleave_price_settings = {
 // Запускаем форматирование cleavejs
 const cleave_cost = new Cleave(input_cost, cleave_price_settings);
 const cleave_downpayment = new Cleave(input_down_payment, cleave_price_settings);
+const cleave_term = new Cleave(input_term, cleave_price_settings);
 
 // Вызов функции расчета суммы кредита в начале
 calc_mortgage();
@@ -30,4 +31,14 @@ form.addEventListener("input", function () {
 function calc_mortgage() {
     const total_amount = +cleave_cost.getRawValue() - +cleave_downpayment.getRawValue();
     total_cost.innerText = price_formatter.format(total_amount);
+
+    // Находим ставку по кредиту, которая выбрана
+    const credit_rate = +document.querySelector("input[name='program']:checked").value;
+    // Все данные которые получаем из HTML документа являются строчными элементами, поэтому необходимо преобразовать в число - "+"
+
+    // Срок ипотеки в годах
+    const years = +cleave_term.getRawValue();
+    
+    // Срок ипотеки в месяцах
+    const months = years * 12;
 };
