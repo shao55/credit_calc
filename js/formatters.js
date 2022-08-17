@@ -14,3 +14,11 @@ export const price_formatter = new Intl.NumberFormat("ru-RU",
         maximumFractionDigits: 0 
     }
 );
+
+export const price_formatter_decimals = new Intl.NumberFormat("ru-RU",
+    {
+        style: "currency", 
+        currency: "RUB", 
+        maximumFractionDigits: 2 
+    }
+);

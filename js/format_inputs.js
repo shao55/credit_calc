@@ -1,4 +1,4 @@
-import {price_formatter} from "./formatters.js"
+import {price_formatter, price_formatter_decimals} from "./formatters.js"
 // Находим инпуты на страницы
 const input_cost = document.querySelector("#input-cost");
 const input_down_payment = document.querySelector("#input-downpayment");
@@ -30,24 +30,103 @@ form.addEventListener("input", function () {
 
 // Функция расчета суммы кредита (общая сумма минус первоначальный взнос)
 function calc_mortgage() {
+
     // Общая сумма кредита
     const total_amount = +cleave_cost.getRawValue() - +cleave_downpayment.getRawValue();
     total_cost.innerText = price_formatter.format(total_amount);
 
     // Находим ставку по кредиту, которая выбрана
     const credit_rate = +document.querySelector("input[name='program']:checked").value;
-    const months_rate = credit_rate / 12;
+    const months_rate = (credit_rate * 100) / 12;
     // Все данные которые получаем из HTML документа являются строчными элементами, поэтому необходимо преобразовать в число - "+"
 
     // Срок ипотеки в годах
     const years = +cleave_term.getRawValue();
-    
+
     // Срок ипотеки в месяцах
     const months = years * 12;
 
     // Рассчет ежемесячного платежа
-
-    const months_payment = (total_amount * months_rate) / 1 - (1 + months_rate) * (1 - months);
-
-    total_months_payment.innerText = months_payment;
+    const months_payment = (total_amount * months_rate) / (1 - (1 + months_rate) * (1 - months));
+    
+    // Отображение ежемесячного платежа на страницу
+    total_months_payment.innerText = price_formatter_decimals.format(months_payment);
 };
+
+// Слайдер стоимости недвижимости
+const slider_cost = document.getElementById("slider-cost");
+
+noUiSlider.create(slider_cost, {
+    start: 12000000,
+    connect: "lower",
+    tooltips: true,
+    step: 100000,
+    range: {
+        "min": 0,
+        "50%": [10000000, 1000000],
+        "max": 100000000,
+    },
+    format: wNumb({
+        decimals: 0,
+        thousand: " ",
+        suffix: " ",
+    }),
+});
+
+slider_cost.noUiSlider.on("update", function () {
+    const slider_value = parseInt(slider_cost.noUiSlider.get(true));
+    cleave_cost.setRawValue(slider_value);
+    calc_mortgage();
+});
+
+// Слайдер первоначального взноса
+const slider_downpayment = document.getElementById("slider-downpayment");
+
+noUiSlider.create(slider_downpayment, {
+    start: 12000000,
+    connect: "lower",
+    tooltips: true,
+    step: 100000,
+    range: {
+        "min": 0,
+        "50%": [10000000, 1000000],
+        "max": 100000000,
+    },
+    format: wNumb({
+        decimals: 0,
+        thousand: " ",
+        suffix: " ",
+    }),
+});
+
+slider_downpayment.noUiSlider.on("update", function () {
+    const slider_value = parseInt(slider_cost.noUiSlider.get(true));
+    cleave_downpayment.setRawValue(slider_value);
+    calc_mortgage();
+});
+
+// Слайдер срока кредитования
+const slider_term = document.getElementById("slider-term");
+
+noUiSlider.create(slider_term, {
+    start: 12000000,
+    connect: "lower",
+    tooltips: true,
+    step: 100000,
+    range: {
+        "min": 0,
+        "50%": [10000000, 1000000],
+        "max": 100000000,
+    },
+    format: wNumb({
+        decimals: 0,
+        thousand: " ",
+        suffix: " ",
+    }),
+});
+
+slider_term.noUiSlider.on("update", function () {
+    const slider_value = parseInt(slider_cost.noUiSlider.get(true));
+    cleave_term.setRawValue(slider_value);
+    calc_mortgage();
+});

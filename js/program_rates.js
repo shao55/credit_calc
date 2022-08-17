@@ -1,6 +1,6 @@
 import { percent_formatter } from "./formatters.js";
 // Процентные ставки
-const program_base = 0.12;
+const program_base = 0.099;
 const program_it = 0.047;
 const program_gov = 0.067;
 const program_zero = 0.108;
