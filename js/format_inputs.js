@@ -57,9 +57,9 @@ function calc_mortgage() {
 const slider_cost = document.getElementById("slider-cost");
 
 noUiSlider.create(slider_cost, {
-    start: 12000000,
+    start: 10000000,
     connect: "lower",
-    tooltips: true,
+    // tooltips: true,
     step: 100000,
     range: {
         "min": 0,
@@ -83,9 +83,9 @@ slider_cost.noUiSlider.on("update", function () {
 const slider_downpayment = document.getElementById("slider-downpayment");
 
 noUiSlider.create(slider_downpayment, {
-    start: 12000000,
+    start: 4000000,
     connect: "lower",
-    tooltips: true,
+    // tooltips: true,
     step: 100000,
     range: {
         "min": 0,
@@ -100,7 +100,7 @@ noUiSlider.create(slider_downpayment, {
 });
 
 slider_downpayment.noUiSlider.on("update", function () {
-    const slider_value = parseInt(slider_cost.noUiSlider.get(true));
+    const slider_value = parseInt(slider_downpayment.noUiSlider.get(true));
     cleave_downpayment.setRawValue(slider_value);
     calc_mortgage();
 });
@@ -109,24 +109,23 @@ slider_downpayment.noUiSlider.on("update", function () {
 const slider_term = document.getElementById("slider-term");
 
 noUiSlider.create(slider_term, {
-    start: 12000000,
+    start: 5,
     connect: "lower",
-    tooltips: true,
-    step: 100000,
+    // tooltips: true,
+    step: 1,
     range: {
-        "min": 0,
-        "50%": [10000000, 1000000],
-        "max": 100000000,
+        min: 1,
+        max: 30,
     },
     format: wNumb({
         decimals: 0,
-        thousand: " ",
-        suffix: " ",
+        thousand: "",
+        suffix: "",
     }),
 });
 
 slider_term.noUiSlider.on("update", function () {
-    const slider_value = parseInt(slider_cost.noUiSlider.get(true));
+    const slider_value = parseInt(slider_term.noUiSlider.get(true));
     cleave_term.setRawValue(slider_value);
     calc_mortgage();
 });

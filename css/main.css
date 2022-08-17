@@ -245,9 +245,3 @@ body {
 
 	transition: transform 0.1s ease-in;
 }
-
-#slider-cost .noUi-handle:hover,
-#slider-downpayment .noUi-handle:hover,
-#slider-term .noUi-handle:hover {
-	transform: scale(1.3);
-}
